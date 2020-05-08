@@ -1,0 +1,10 @@
+**/node_modules
+**/*.zip
+**/.env
+**/build
+**/server-build
+.DS_Store
+
+!client/.env
+mongodb_data
+ganache_data
