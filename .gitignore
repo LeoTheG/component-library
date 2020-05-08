@@ -2,7 +2,7 @@
 **/*.zip
 **/.env
 **/build
-**/server-build
+**/dist
 .DS_Store
 
 !client/.env
