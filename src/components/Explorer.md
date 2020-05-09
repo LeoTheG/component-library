@@ -1,0 +1,5 @@
+Explorer example:
+
+```js
+<Explorer />
+```

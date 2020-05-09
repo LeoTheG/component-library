@@ -1,5 +1,5 @@
-import { TestComp } from "./components/testComp";
+import { Explorer } from "./components/Explorer";
 
-export { TestComp };
+export { Explorer };
 
 export default void 0;
