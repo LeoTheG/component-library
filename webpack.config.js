@@ -40,8 +40,10 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     alias: {
-      react: path.resolve(__dirname, "./node_modules/react"),
+      react: path.resolve("./node_modules/react"),
       "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),
+      //   webpack: path.resolve(__dirname, "./node_modules/webpack"),
+      public: path.resolve(__dirname, "src", "public"),
     },
   },
   output: {

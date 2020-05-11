@@ -1,6 +1,6 @@
 {
   "name": "adventure-component-library",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "./src/index.tsx",
   "scripts": {
@@ -14,13 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "@material-ui/core": "^4.9.13",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "webpack": "^4.43.0"
+    "@material-ui/icons": "^4.9.1",
+    "bignumber.js": "^9.0.0"
   },
   "peerDependencies": {
-    "react": "latest",
-    "react-dom": "latest"
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "module": "./dist/index.js",
   "devDependencies": {
@@ -44,6 +43,7 @@
     "ts-loader": "^7.0.3",
     "typescript": "^3.8.3",
     "url-loader": "^4.1.0",
+    "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"
   }
 }

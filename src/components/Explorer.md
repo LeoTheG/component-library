@@ -1,5 +1,0 @@
-Explorer example:
-
-```js
-<Explorer />
-```
