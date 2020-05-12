@@ -11,7 +11,8 @@
     "lib": ["es6"],
     "moduleResolution": "Node",
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "declaration": true
   },
   "include": ["./src/**/**/*"],
   "exclude": ["node_modules"]
