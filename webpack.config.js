@@ -5,41 +5,56 @@ const isProduction =
   typeof NODE_ENV !== "undefined" && NODE_ENV === "production";
 const mode = isProduction ? "production" : "development";
 const devtool = isProduction ? false : "inline-source-map";
+const devMode = !isProduction;
 module.exports = {
   entry: "./src/index.tsx",
   target: "web",
   mode,
   devtool,
-  plugins: [new MiniCssExtractPlugin()],
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: "styles",
-          test: /\.css$/,
-          chunks: "all",
-          enforce: true,
-        },
-      },
-    },
-  },
+  //   plugins: [
+  //     new MiniCssExtractPlugin({
+  //       // Options similar to the same options in webpackOptions.output
+  //       // all options are optional
+  //       ignoreOrder: false, // Enable to remove warnings about conflicting order
+  //       filename: devMode ? "[name].css" : "[name].[hash].css",
+  //       chunkFilename: devMode ? "[id].css" : "[id].[hash].css",
+  //     }),
+  //   ],
+
+  //   optimization: {
+  //     splitChunks: {
+  //       cacheGroups: {
+  //         styles: {
+  //           name: "styles",
+  //           test: /\.css$/,
+  //           chunks: "all",
+  //           enforce: true,
+  //         },
+  //       },
+  //     },
+  //   },
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              // only enable hot in development
-              hmr: process.env.NODE_ENV === "development",
-              // if hmr does not work, this is a forceful method.
-              reloadAll: true,
-            },
-          },
-          "css-loader",
-        ],
+        use: ["style-loader", "css-loader"],
       },
+
+      //   {
+      //     test: /\.css$/i,
+      //     use: [
+      //       {
+      //         loader: MiniCssExtractPlugin.loader,
+      //         options: {
+      //           // only enable hot in development
+      //           hmr: process.env.NODE_ENV === "development",
+      //           // if hmr does not work, this is a forceful method.
+      //           reloadAll: true,
+      //         },
+      //       },
+      //       "css-loader",
+      //     ],
+      //   },
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
@@ -67,7 +82,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js", ".css"],
     alias: {
       react: path.resolve("./node_modules/react"),
       "react-dom": path.resolve(__dirname, "./node_modules/react-dom"),

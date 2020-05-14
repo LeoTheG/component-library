@@ -144,43 +144,45 @@ export const Explorer = (props: IExplorerProps) => {
   }, []);
 
   return (
-    <AppBar
-      className="explorer-container"
-      style={{ ...props.style }}
-      position="static"
-    >
-      <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-        {!isConnectedMetamask && (
-          <IconButton
-            onClick={connectMetamask}
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <img className={classes.img} src={imageMetamask} />
-          </IconButton>
-        )}
-        {balance && <div>{balance.substring(0, 6)} ETH</div>}
-        <SiteNavigation
-          site={props.site}
-          onClickSitesButton={handleClickSitesButton}
-          onClickPrev={onClick(false)}
-          onClickNext={onClick(true)}
-        />
-      </Toolbar>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleCloseSites}
+    <div className="explorer-container">
+      <AppBar
+        //   className="explorer-container"
+        style={{ ...props.style }}
+        position="static"
       >
-        {siteOrder.map((site) => {
-          return <MenuItem onClick={onClickSite(site)}>{site}</MenuItem>;
-        })}
-      </Menu>
-    </AppBar>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+          {!isConnectedMetamask && (
+            <IconButton
+              onClick={connectMetamask}
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu"
+            >
+              <img className={classes.img} src={imageMetamask} />
+            </IconButton>
+          )}
+          {balance && <div>{balance.substring(0, 6)} ETH</div>}
+          <SiteNavigation
+            site={props.site}
+            onClickSitesButton={handleClickSitesButton}
+            onClickPrev={onClick(false)}
+            onClickNext={onClick(true)}
+          />
+        </Toolbar>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleCloseSites}
+        >
+          {siteOrder.map((site) => {
+            return <MenuItem onClick={onClickSite(site)}>{site}</MenuItem>;
+          })}
+        </Menu>
+      </AppBar>
+    </div>
   );
 };
 
