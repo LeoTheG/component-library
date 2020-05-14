@@ -16,7 +16,14 @@ declare let ethereum: any;
 declare let Web3: any;
 declare let window: any;
 
-const siteorder = Object.values(sites);
+const sitesToUrl: { [key: string]: string } = {
+  [sites.dunkonyou]: "http://13.56.180.100/",
+  [sites.ginandjuice]: "http://52.53.173.93/",
+  [sites.jolene]: "http://54.177.174.215/",
+  [sites.sonnet18]: "http://13.57.47.139/",
+};
+
+const siteOrder = Object.values(sites);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IExplorerProps {
-  site: sites;
+  site: string;
 }
 
 export const Explorer = (props: IExplorerProps) => {
@@ -45,6 +52,14 @@ export const Explorer = (props: IExplorerProps) => {
   const [userAddress, setUserAddress] = useState("");
   const [balance, setBalance] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [prevSite, setPrevSite] = useState("");
+  const [nextSite, setNextSite] = useState("");
+
+  useEffect(() => {
+    const { prev, next } = getPrevNextSites();
+    setPrevSite(prev);
+    setNextSite(next);
+  }, []);
 
   useEffect(() => {
     if (userAddress) {
@@ -64,6 +79,41 @@ export const Explorer = (props: IExplorerProps) => {
 
   const handleCloseSites = () => {
     setAnchorEl(null);
+  };
+
+  const onClick = (isNext: boolean) => () => {
+    if (isNext) {
+      window.open(nextSite);
+    } else {
+      window.open(prevSite);
+    }
+  };
+
+  const getPrevNextSites = (): { prev: string; next: string } => {
+    const siteEntries = Object.entries(sites);
+
+    const siteIndex = siteEntries.findIndex(([key, value]) => {
+      return value === props.site;
+    });
+
+    let prevIndex = siteIndex - 1;
+    let nextIndex = siteIndex + 1;
+
+    if (prevIndex < 0) {
+      prevIndex = siteEntries.length - 1;
+    }
+
+    if (nextIndex > siteEntries.length) {
+      nextIndex = 0;
+    }
+    return {
+      prev: sitesToUrl[siteEntries[prevIndex][1]],
+      next: sitesToUrl[siteEntries[nextIndex][1]],
+    };
+  };
+
+  const onClickSite = (site: string) => () => {
+    window.open(sitesToUrl[site]);
   };
 
   const connectMetamask = useCallback(async () => {
@@ -109,7 +159,9 @@ export const Explorer = (props: IExplorerProps) => {
         {balance && <div>{balance} ETH</div>}
         <SiteNavigation
           site={props.site}
-          onClickSites={handleClickSitesButton}
+          onClickSitesButton={handleClickSitesButton}
+          onClickPrev={onClick(false)}
+          onClickNext={onClick(true)}
         />
       </Toolbar>
       <Menu
@@ -119,8 +171,8 @@ export const Explorer = (props: IExplorerProps) => {
         open={Boolean(anchorEl)}
         onClose={handleCloseSites}
       >
-        {siteorder.map((site) => {
-          return <MenuItem>{site}</MenuItem>;
+        {siteOrder.map((site) => {
+          return <MenuItem onClick={onClickSite(site)}>{site}</MenuItem>;
         })}
       </Menu>
     </AppBar>
@@ -128,10 +180,12 @@ export const Explorer = (props: IExplorerProps) => {
 };
 
 interface ISiteNavigationProps {
-  onClickSites: (
+  onClickSitesButton: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
-  site: sites;
+  site: string;
+  onClickPrev: () => void;
+  onClickNext: () => void;
 }
 
 const SiteNavigation = (props: ISiteNavigationProps) => {
@@ -142,15 +196,15 @@ const SiteNavigation = (props: ISiteNavigationProps) => {
         display: "flex",
       }}
     >
-      <IconButton style={{ color: "white" }}>
+      <IconButton onClick={props.onClickPrev} style={{ color: "white" }}>
         <NavigateBeforeIcon />
       </IconButton>
 
-      <Button variant="contained" onClick={props.onClickSites}>
+      <Button variant="contained" onClick={props.onClickSitesButton}>
         {props.site}
       </Button>
 
-      <IconButton style={{ color: "white" }}>
+      <IconButton onClick={props.onClickNext} style={{ color: "white" }}>
         <NavigateNextIcon />
       </IconButton>
     </div>
