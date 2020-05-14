@@ -143,7 +143,11 @@ export const Explorer = (props: IExplorerProps) => {
   }, []);
 
   return (
-    <AppBar style={{ width: 500, ...props.style }} position="static">
+    <AppBar
+      className="explorer-container"
+      style={{ ...props.style }}
+      position="static"
+    >
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
         {!isConnectedMetamask && (
           <IconButton
@@ -156,7 +160,7 @@ export const Explorer = (props: IExplorerProps) => {
             <img className={classes.img} src={imageMetamask} />
           </IconButton>
         )}
-        {balance && <div>{balance} ETH</div>}
+        {balance && <div>{balance.substring(0, 6)} ETH</div>}
         <SiteNavigation
           site={props.site}
           onClickSitesButton={handleClickSitesButton}
