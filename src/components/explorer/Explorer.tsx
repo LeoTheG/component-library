@@ -10,6 +10,7 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import { MenuItem, Menu } from "@material-ui/core";
 import { sites } from "../../types";
+import "./Explorer.css";
 
 declare let web3: any;
 declare let ethereum: any;
