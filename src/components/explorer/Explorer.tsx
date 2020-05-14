@@ -142,9 +142,8 @@ export const Explorer = (props: IExplorerProps) => {
   }, []);
 
   return (
-    <AppBar position="static">
+    <AppBar style={{ width: 500 }} position="static">
       <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-        {/* {isConnectedMetamask && <div>Balance: {balance} </div>} */}
         {!isConnectedMetamask && (
           <IconButton
             onClick={connectMetamask}
