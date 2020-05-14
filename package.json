@@ -8,7 +8,7 @@
     "build": "webpack",
     "start:library": "npx styleguidist server",
     "build:library": "npx styleguidist build",
-    "__prepublish": "./node_modules/@babel/cli/bin/babel.js src --out-dir dist"
+    "prepublish": "npm run build"
   },
   "keywords": [],
   "author": "",
