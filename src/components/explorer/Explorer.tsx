@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IExplorerProps {
   site: string;
+  style?: React.CSSProperties;
 }
 
 export const Explorer = (props: IExplorerProps) => {
