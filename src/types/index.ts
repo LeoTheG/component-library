@@ -3,4 +3,5 @@ export const sites: { [key: string]: string } = {
   sonnet18: "sonnet18",
   jolene: "jolene",
   dunkonyou: "dunkonyou",
+  leaderboard: "leaderboard",
 };

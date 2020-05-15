@@ -22,6 +22,7 @@ const sitesToUrl: { [key: string]: string } = {
   [sites.ginandjuice]: "http://52.53.173.93/",
   [sites.jolene]: "http://54.177.174.215/",
   [sites.sonnet18]: "http://13.57.47.139/",
+  [sites.leaderboard]: "http://3.101.78.197/",
 };
 
 const siteOrder = Object.values(sites);
