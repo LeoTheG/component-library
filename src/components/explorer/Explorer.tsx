@@ -106,7 +106,7 @@ export const Explorer = (props: IExplorerProps) => {
       prevIndex = siteEntries.length - 1;
     }
 
-    if (nextIndex > siteEntries.length) {
+    if (nextIndex >= siteEntries.length) {
       nextIndex = 0;
     }
     return {
