@@ -1,9 +1,25 @@
 .explorer-container {
   width: 500px;
 }
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.music-controls-container {
+  width: 100%;
+}
 
 @media only screen and (max-width: 500px) {
   .explorer-container {
-    width: 300px;
+    width: 100vw;
   }
+}
+
+.MuiToolbar-root.MuiToolbar-gutters {
+  padding: 0;
 }

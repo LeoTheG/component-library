@@ -8,9 +8,14 @@ const imageMetamask = require("public/metamask.png");
 import BigNumber from "bignumber.js";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import { MenuItem, Menu } from "@material-ui/core";
+import SkipPrevious from "@material-ui/icons/SkipPrevious";
+import SkipNext from "@material-ui/icons/SkipNext";
+import PlayArrow from "@material-ui/icons/PlayArrow";
+import Pause from "@material-ui/icons/Pause";
+import { MenuItem, Menu, Tooltip } from "@material-ui/core";
 import { sites } from "../../types";
 import "./Explorer.css";
+import { songData, ISong } from "../../types/musicData";
 
 declare let web3: any;
 declare let ethereum: any;
@@ -25,10 +30,15 @@ const sitesToUrl: { [key: string]: string } = {
   [sites.leaderboard]: "http://3.101.78.197/",
 };
 
+const songArr = Object.values(songData);
+
 const siteOrder = Object.values(sites);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    asdfasdfasdfasdf: {
+      padding: "0!important",
+    },
     root: {
       flexGrow: 1,
     },
@@ -57,11 +67,21 @@ export const Explorer = (props: IExplorerProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [prevSite, setPrevSite] = useState("");
   const [nextSite, setNextSite] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [songPlayingIndex, setSongPlayingIndex] = useState(0);
+  const song = songArr[songPlayingIndex];
+  const [audio, setAudio] = useState(new window.Audio(song.url));
+
+  const onEndAudio = () => {
+    onClickNextSong();
+  };
 
   useEffect(() => {
     const { prev, next } = getPrevNextSites();
     setPrevSite(prev);
     setNextSite(next);
+    audio.addEventListener("ended", onEndAudio);
+    return () => onEndAudio;
   }, []);
 
   useEffect(() => {
@@ -144,31 +164,88 @@ export const Explorer = (props: IExplorerProps) => {
     }
   }, []);
 
+  const onClickPrevSong = () => {
+    let newSongIndex = songPlayingIndex - 1;
+    if (newSongIndex < 0) {
+      newSongIndex = songArr.length - 1;
+    }
+    setSongPlayingIndex(newSongIndex);
+  };
+  const onClickNextSong = () => {
+    let newSongIndex = songPlayingIndex + 1;
+    if (newSongIndex >= songArr.length) {
+      newSongIndex = 0;
+    }
+    setSongPlayingIndex(newSongIndex);
+  };
+
+  const onTogglePlaySong = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  useEffect(() => {
+    if (isPlaying) {
+      audio.play();
+    }
+    if (!isPlaying) {
+      audio.pause();
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      audio.src = songArr[songPlayingIndex].url;
+      audio.play();
+    }
+  }, [songPlayingIndex]);
+
   return (
     <div className="explorer-container">
-      <AppBar
-        //   className="explorer-container"
-        style={{ ...props.style }}
-        position="static"
-      >
-        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
-          {!isConnectedMetamask && (
-            <IconButton
-              onClick={connectMetamask}
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <img className={classes.img} src={imageMetamask} />
-            </IconButton>
-          )}
-          {balance && <div>{balance.substring(0, 6)} ETH</div>}
-          <SiteNavigation
-            site={props.site}
-            onClickSitesButton={handleClickSitesButton}
-            onClickPrev={onClick(false)}
-            onClickNext={onClick(true)}
+      <AppBar style={{ ...props.style }} position="static">
+        <Toolbar
+          className="flex-col"
+          style={{
+            justifyContent: "space-between",
+            width: "100%",
+            alignItems: "center",
+            padding: "5px 0",
+          }}
+        >
+          <div
+            className="flex-row"
+            style={{
+              justifyContent: "space-around",
+              width: "100%",
+
+              alignItems: "center",
+            }}
+          >
+            <Tooltip title="Connect to metamask">
+              <IconButton
+                onClick={!isConnectedMetamask ? connectMetamask : undefined}
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+              >
+                <img className={classes.img} src={imageMetamask} />
+              </IconButton>
+            </Tooltip>
+            {balance && <div>{balance.substring(0, 6)} ETH</div>}
+
+            <SiteNavigation
+              site={props.site}
+              onClickSitesButton={handleClickSitesButton}
+              onClickPrev={onClick(false)}
+              onClickNext={onClick(true)}
+            />
+          </div>
+          <MusicControls
+            isPlaying={isPlaying}
+            onClickPrev={onClickPrevSong}
+            onClickNext={onClickNextSong}
+            onTogglePlay={onTogglePlaySong}
+            song={songArr[songPlayingIndex]}
           />
         </Toolbar>
         <Menu
@@ -198,23 +275,72 @@ interface ISiteNavigationProps {
 
 const SiteNavigation = (props: ISiteNavigationProps) => {
   return (
-    <div
-      style={{
-        maxWidth: 250,
-        display: "flex",
-      }}
-    >
-      <IconButton onClick={props.onClickPrev} style={{ color: "white" }}>
-        <NavigateBeforeIcon />
-      </IconButton>
+    // todo figure out how to automate this, cant set env variable thru npx styleguidist server
+    <Tooltip title={"Explorer version: 0.0.23"}>
+      <div
+        style={{
+          maxWidth: 250,
+          display: "flex",
+        }}
+      >
+        <IconButton onClick={props.onClickPrev} style={{ color: "white" }}>
+          <NavigateBeforeIcon />
+        </IconButton>
 
-      <Button variant="contained" onClick={props.onClickSitesButton}>
-        {props.site}
-      </Button>
+        <Button variant="contained" onClick={props.onClickSitesButton}>
+          {props.site}
+        </Button>
 
-      <IconButton onClick={props.onClickNext} style={{ color: "white" }}>
-        <NavigateNextIcon />
-      </IconButton>
+        <IconButton onClick={props.onClickNext} style={{ color: "white" }}>
+          <NavigateNextIcon />
+        </IconButton>
+      </div>
+    </Tooltip>
+  );
+};
+
+interface IMusicControlProps {
+  isPlaying: boolean;
+  onClickPrev: () => void;
+  onClickNext: () => void;
+  onTogglePlay: () => void;
+  song: ISong;
+}
+
+const MusicControls = (props: IMusicControlProps) => {
+  return (
+    <div className="music-controls-container">
+      <div
+        className="flex-row"
+        style={{
+          width: "100%",
+          alignItems: "space-between",
+        }}
+      >
+        <div className="flex-row">
+          <IconButton onClick={props.onClickPrev} style={{ color: "white" }}>
+            <SkipPrevious />
+          </IconButton>
+
+          <IconButton onClick={props.onTogglePlay} style={{ color: "white" }}>
+            {props.isPlaying ? <Pause /> : <PlayArrow />}
+          </IconButton>
+
+          <IconButton onClick={props.onClickNext} style={{ color: "white" }}>
+            <SkipNext />
+          </IconButton>
+        </div>
+        <div
+          className="flex-col"
+          style={{
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <div>Artist: {props.song.artist}</div>
+          <div>Song: {props.song.songName}</div>
+        </div>
+      </div>
     </div>
   );
 };
