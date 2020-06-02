@@ -8,14 +8,11 @@ const imageMetamask = require("public/metamask.png");
 import BigNumber from "bignumber.js";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import SkipPrevious from "@material-ui/icons/SkipPrevious";
-import SkipNext from "@material-ui/icons/SkipNext";
-import PlayArrow from "@material-ui/icons/PlayArrow";
-import Pause from "@material-ui/icons/Pause";
 import { MenuItem, Menu, Tooltip } from "@material-ui/core";
 import { sites } from "../../types";
 import "./Explorer.css";
 import { songData, ISong } from "../../types/musicData";
+import { MusicController } from "../musicController/MusicController";
 
 declare let web3: any;
 declare let ethereum: any;
@@ -240,7 +237,7 @@ export const Explorer = (props: IExplorerProps) => {
               onClickNext={onClick(true)}
             />
           </div>
-          <MusicControls
+          <MusicController
             isPlaying={isPlaying}
             onClickPrev={onClickPrevSong}
             onClickNext={onClickNextSong}
@@ -296,51 +293,5 @@ const SiteNavigation = (props: ISiteNavigationProps) => {
         </IconButton>
       </div>
     </Tooltip>
-  );
-};
-
-interface IMusicControlProps {
-  isPlaying: boolean;
-  onClickPrev: () => void;
-  onClickNext: () => void;
-  onTogglePlay: () => void;
-  song: ISong;
-}
-
-const MusicControls = (props: IMusicControlProps) => {
-  return (
-    <div className="music-controls-container">
-      <div
-        className="flex-row"
-        style={{
-          width: "100%",
-          alignItems: "space-between",
-        }}
-      >
-        <div className="flex-row">
-          <IconButton onClick={props.onClickPrev} style={{ color: "white" }}>
-            <SkipPrevious />
-          </IconButton>
-
-          <IconButton onClick={props.onTogglePlay} style={{ color: "white" }}>
-            {props.isPlaying ? <Pause /> : <PlayArrow />}
-          </IconButton>
-
-          <IconButton onClick={props.onClickNext} style={{ color: "white" }}>
-            <SkipNext />
-          </IconButton>
-        </div>
-        <div
-          className="flex-col"
-          style={{
-            justifyContent: "center",
-            width: "100%",
-          }}
-        >
-          <div>Artist: {props.song.artist}</div>
-          <div>Song: {props.song.songName}</div>
-        </div>
-      </div>
-    </div>
   );
 };
