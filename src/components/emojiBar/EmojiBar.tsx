@@ -98,7 +98,7 @@ export function EmojiBar(props: emojiBarProps) {
   } else if (props.theme === "default") {
     bg = "white";
   } else {
-    console.log("Theme needs to be = 'adventure' | 'default'");
+    console.error("Theme needs to be = 'adventure' | 'default'");
   }
 
   const useStyles = makeStyles((theme: Theme) => ({
