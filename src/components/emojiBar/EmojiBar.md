@@ -1,7 +1,8 @@
 ## Emoji Button/Bar Components
 
 Example:
-`
+
+```
 import {EmojiButton, EmojiBar, emojiDisplayData} from "adventure-component-library"
 
 function App() {
@@ -24,7 +25,7 @@ theme={"default"}
 </div>
 )
 }
-`
+```
 
 ---
 
