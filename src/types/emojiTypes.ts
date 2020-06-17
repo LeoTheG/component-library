@@ -16,7 +16,7 @@ export type emojiHandlerProps = {
 export type emojiBarProps = {
   onClick: (emoji: EmojiData) => void;
   onDelete: (emoji: EmojiData) => void;
-  onToggle: (barId: number) => void;
+  onToggle: () => void;
   emojiData: emojiDisplayData;
   handlerId: number;
   tracker: number;

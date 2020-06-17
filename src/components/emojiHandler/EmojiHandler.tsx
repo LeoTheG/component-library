@@ -14,14 +14,13 @@ import {
   Container,
 } from "@material-ui/core";
 import "emoji-mart/css/emoji-mart.css";
-import "./EmojiBar.css";
+import "./EmojiHandler.css";
 
 const EmojiBar = (props: emojiBarProps) => {
   const displayedEmojis = Object.values(props.emojiData);
 
   return (
     <Container fixed>
-      {/* <Collapse in={Object.keys(props.emojiData).length > 0}> */}
       <div className={"emoji-picker"}>
         <Collapse in={props.handlerId === props.tracker}>
           <Picker
@@ -41,7 +40,7 @@ const EmojiBar = (props: emojiBarProps) => {
             <Button
               // className={classes.root}
               variant="contained"
-              onClick={() => props.onToggle(props.handlerId)}
+              onClick={() => props.onToggle()}
             >
               <Emoji emoji="smile" set="apple" size={24} />
             </Button>
@@ -62,7 +61,6 @@ const EmojiBar = (props: emojiBarProps) => {
           })}
         </Grid>
       </Paper>
-      {/* </Collapse> */}
     </Container>
   );
 };
@@ -97,15 +95,27 @@ const EmojiHandler = (props: emojiHandlerProps) => {
     return setEmojisDisplayed(newObj);
   };
 
+  // Checks if tracker is pointing to designated handler, if so sets tracker to "0"
+  // No handle should have the ID of "0"
+  const onToggle = () => {
+    if (props.handlerId === props.tracker) {
+      props.setTracker(0);
+    } else {
+      props.setTracker(props.handlerId);
+    }
+  };
+
   return (
-    <EmojiBar
-      onClick={ticker}
-      onDelete={deleteChip}
-      onToggle={props.setTracker}
-      emojiData={emojisDisplayed}
-      handlerId={props.handlerId}
-      tracker={props.tracker}
-    />
+    <div>
+      <EmojiBar
+        onClick={ticker}
+        onDelete={deleteChip}
+        onToggle={onToggle}
+        emojiData={emojisDisplayed}
+        handlerId={props.handlerId}
+        tracker={props.tracker}
+      />
+    </div>
   );
 };
 
