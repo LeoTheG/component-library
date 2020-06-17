@@ -1,3 +1,5 @@
+import { EmojiData } from "emoji-mart";
+
 export interface emojiDisplayData {
   [emoji: string]: {
     data: EmojiData;
@@ -5,15 +7,17 @@ export interface emojiDisplayData {
   };
 }
 
-export type emojiButtonProps = {
-  emojiData: emojiDisplayData;
-  setEmojiData: React.Dispatch<React.SetStateAction<emojiDisplayData>>;
-  theme: string;
-  limit?: number;
+export type emojiHandlerProps = {
+  handlerId: number;
+  tracker: number;
+  setTracker: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export type emojiBarProps = {
+  onClick: (emoji: EmojiData) => void;
+  onDelete: (emoji: EmojiData) => void;
+  onToggle: (barId: number) => void;
   emojiData: emojiDisplayData;
-  setEmojiData: React.Dispatch<React.SetStateAction<emojiDisplayData>>;
-  theme: string;
+  handlerId: number;
+  tracker: number;
 };
