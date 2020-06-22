@@ -14,7 +14,7 @@ import {
   Container,
 } from "@material-ui/core";
 import "emoji-mart/css/emoji-mart.css";
-import "./EmojiHandler.css";
+import "./css/EmojiHandler.css";
 
 const EmojiBar = (props: emojiBarProps) => {
   const displayedEmojis = Object.values(props.emojiData);
@@ -34,7 +34,7 @@ const EmojiBar = (props: emojiBarProps) => {
           />
         </Collapse>
       </div>
-      <Paper elevation={24}>
+      <Paper elevation={12}>
         <Grid container spacing={1}>
           <Grid item xs={"auto"}>
             <Button

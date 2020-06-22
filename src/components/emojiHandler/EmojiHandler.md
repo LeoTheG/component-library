@@ -1,10 +1,10 @@
-# Emoji Button/Bar Components
+# Emoji Handler Components
 
-<!-- ```tsx
-  let tracker = 0
-  <EmojiHandler handlerId={1} tracker={tracker} setTracker={()=> {if(tracker === 0) {
-  tracker = 1
- } else {
-   tracker =0
-}} />
-``` -->
+```tsx
+const [tracker, setTracker] = React.useState(0);
+return (
+  <div class={{ height: "800px" }}>
+    <EmojiHandler handlerId={1} tracker={tracker} setTracker={setTracker} />
+  </div>
+);
+```
